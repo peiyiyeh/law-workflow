@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>立法理由採用決策圖</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            background-color: #f8fafc;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-12">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-10 text-center">
+            <h1 class="text-4xl font-extrabold text-slate-800 tracking-tight">立法理由採用決策圖</h1>
+            <div class="h-1 w-24 bg-blue-600 mx-auto mt-4 rounded-full"></div>
+        </header>
+
+        <div class="mermaid">
+            graph TD
+            %% 節點樣式定義 (強化字體大小與邊距)
+            classDef start fill:#3b82f6,stroke:#1d4ed8,color:#fff,rx:20,ry:20,font-size:22px,font-weight:bold;
+            classDef decision fill:#fef9c3,stroke:#eab308,stroke-dasharray: 5 5,font-size:18px;
+            classDef action fill:#fff,stroke:#1e293b,stroke-width:2px,font-size:18px;
+            classDef endAction fill:#ecfdf5,stroke:#10b981,color:#059669,stroke-width:3px,rx:25,ry:25,font-size:24px,font-weight:bold;
+            classDef error fill:#fef2f2,stroke:#ef4444,color:#b91c1c,font-size:18px;
+            classDef info fill:#eff6ff,stroke:#3b82f6,color:#2563eb,rx:20,ry:20,font-size:18px;
+            classDef multiAction fill:#f8fafc,stroke:#334155,stroke-width:1px,font-size:16px;
+            classDef darkAction fill:#334155,stroke:#1e293b,color:#fff,font-size:18px,font-weight:bold;
+            classDef roundedBox fill:#fff,stroke:#1e293b,stroke-width:2.5px,rx:30,ry:30,font-size:20px,font-weight:bold;
+
+            %% 流程節點
+            START([二讀逐條宣讀]) --> Q1{照審查會條文通過}
+            
+            %% 左側路徑 (No)
+            Q1 -- No --> NO_DESC[無說明]:::error
+            NO_DESC --> PAGE1([提供審查會會議公報頁碼]):::info
+            
+            %% 中間主路徑 (Yes)
+            Q1 -- Yes --> REPORT[審查報告 對照表]:::action
+            REPORT --> Q2{照提案通過}
+            
+            Q2 -- Yes --> PROP_DESC[提案說明]:::action
+            PROP_DESC --> ADOPT([採用]):::endAction
+
+            %% 中間分支 (No)
+            Q2 -- No --> SUB_A[照修正通過]:::multiAction
+            Q2 -- No --> SUB_B[照修正動議通過]:::multiAction
+            Q2 -- No --> SUB_C[照修正動議修正]:::multiAction
+            
+            SUB_A --> DESC_A[審查會補充理由]:::multiAction
+            SUB_B --> DESC_B[修正動議說明]:::multiAction
+            SUB_C --> DESC_C[補充修正理由]:::multiAction
+            
+            DESC_A --> ADOPT
+            DESC_B --> ADOPT
+            DESC_C --> ADOPT
+
+            %% 右側路徑
+            Q1 -- No --> Q3{照協商條文通過}
+            Q3 --> MEETING[黨團協商會議]:::action
+            MEETING --> Q4{附件有說明?}:::decision
+            
+            Q4 -- Yes --> ADOPT
+            Q4 -- No --> PAGE2([提供協商會議公報頁碼]):::info
+
+            %% 獨立分支：表決修正動議 (依要求調整)
+            START -.-> MOTION_VOTE[（表決）照修正動議]:::darkAction
+            MOTION_VOTE --> ADOPT_DESC([採用動議說明]):::roundedBox
+
+            %% 套用主要節點樣式
+            class START start;
+            class Q1,Q2,Q4,Q3 decision;
+        </div>
+
+        <footer class="mt-12 text-sm text-slate-400 flex justify-between items-center border-t pt-6">
+            <span>立法審查決策邏輯</span>
+            <span class="font-bold">法律組 | 頁 6</span>
+        </footer>
+    </div>
+
+    <script>
+        // 初始化 Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#ffffff',
+                primaryTextColor: '#1e293b',
+                primaryBorderColor: '#1e293b',
+                lineColor: '#64748b',
+                secondaryColor: '#fef9c3',
+                tertiaryColor: '#f8fafc',
+                fontFamily: 'system-ui, -apple-system, "Noto Sans TC", sans-serif'
+            },
+            flowchart: {
+                htmlLabels: true,
+                curve: 'basis',
+                useMaxWidth: true
+            }
+        });
+    </script>
+</body>
+</html>

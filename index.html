@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>法律案建檔作業流程儀表板</title>
+    <title>法律案建檔作業流程簡報</title>
+    <!-- 引入 Noto Sans TC 字體 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <!-- 引入 Font Awesome 圖示庫 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --primary-color: #002147;
-            --accent-color: #c5b358;
+            --primary-color: #002147; /* 專業深藍 */
+            --accent-color: #c5b358;  /* 金褐色強調 */
             --text-main: #1e293b;
             --text-sub: #475569;
             --white: #ffffff;
             --slide-width: 1280px;
             --slide-height: 720px;
-            --excel-color: #1d6f42;
-            --word-color: #2b579a;
+            --excel-color: #1d6f42;   /* Excel 代表色 */
+            --word-color: #2b579a;    /* Word 代表色 */
         }
 
         * { box-sizing: border-box; }
@@ -34,25 +36,20 @@
             font-family: 'Noto Sans TC', sans-serif;
         }
 
-        /* 頂部操作指引卡片 */
-        .instruction-card {
+        /* 頂部操作指引（列印時隱藏） */
+        .print-tools {
             background: white;
-            padding: 20px 40px;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-align: left;
-            width: var(--slide-width);
-            border-left: 8px solid var(--primary-color);
+            text-align: center;
+            max-width: 1280px;
+            width: 90%;
+            margin-bottom: 20px;
+            z-index: 10;
         }
 
-        .instruction-card h3 {
-            margin: 0 0 10px 0;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
+        /* 簡報容器：模擬 PPT 比例 */
         .slide-container {
             width: var(--slide-width);
             height: var(--slide-height);
@@ -73,7 +70,7 @@
             break-after: page;
         }
 
-        /* 裝飾性背景 */
+        /* 背景修飾圖形 */
         .slide-container::before {
             content: '';
             position: absolute;
@@ -110,6 +107,7 @@
             z-index: 1;
         }
 
+        /* 步驟間的箭頭連線 */
         .flow-connector {
             flex-grow: 1;
             height: 6px;
@@ -127,6 +125,7 @@
             align-items: center;
         }
 
+        /* 步驟圖示圓圈 */
         .icon-box {
             width: 120px;
             height: 120px;
@@ -148,8 +147,7 @@
             left: -5px;
             background-color: var(--accent-color);
             color: var(--primary-color);
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -159,6 +157,7 @@
             border: 3px solid var(--white);
         }
 
+        /* 內容卡片 */
         .step-content {
             text-align: center;
             background: #fdfdfd;
@@ -170,6 +169,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
 
         .step-title {
@@ -180,6 +180,7 @@
             display: block;
         }
 
+        /* 重點強調框（黃色框框） */
         .highlight-box {
             margin-top: 10px;
             padding: 18px;
@@ -195,6 +196,7 @@
             gap: 18px;
         }
 
+        /* 檔案點擊連結 */
         .file-link {
             text-decoration: none;
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -204,21 +206,23 @@
 
         .file-link:hover {
             transform: scale(1.4);
+            filter: drop-shadow(0 0 8px rgba(0,0,0,0.1));
         }
 
         .icon-excel { color: var(--excel-color); font-size: 36px; }
         .icon-word { color: var(--word-color); font-size: 36px; }
         .icon-system { color: var(--primary-color); font-size: 36px; }
 
+        /* 頁尾組別標籤 */
         .footer {
             margin-top: auto;
-            font-size: 22px;
+            font-size: 20px;
             color: var(--primary-color);
             text-align: right;
             position: relative;
             z-index: 1;
             font-weight: 700;
-            border-top: 2px solid var(--accent-color);
+            border-top: 1px solid #e2e8f0;
             padding-top: 20px;
         }
 
@@ -235,7 +239,7 @@
 
         @media print {
             body { background-color: white; padding: 0; gap: 0; }
-            .instruction-card { display: none !important; }
+            .print-tools { display: none !important; }
             .slide-container {
                 box-shadow: none;
                 border-radius: 0;
@@ -243,24 +247,30 @@
                 height: 100vh;
                 margin: 0;
             }
+            @page {
+                size: landscape;
+                margin: 0;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="instruction-card">
-        <h3><i class="fa-solid fa-circle-info"></i> 建檔作業導覽</h3>
-        <p style="margin: 0; font-size: 16px; color: var(--text-sub);">
-            此頁面為自動化作業儀表板。點擊下方黃色框內的圖示即可直接下載對應的作業範本檔案。
+    <div class="print-tools">
+        <h3 style="margin: 0 0 5px 0; color: var(--primary-color);">法律案建檔作業流程指引</h3>
+        <p style="margin: 0; font-size: 15px; color: var(--text-sub);">
+            請確保 GitHub 上的檔案命名與連結一致，點擊黃色框內圖示即可下載作業範本。
         </p>
     </div>
 
-    <!-- 第一張簡報：初步建檔 -->
+    <!-- 簡報第一頁 -->
     <div class="slide-container page-break" id="slide1">
         <div class="slide-header">
             <h1>法律案三讀至建檔作業流程</h1>
         </div>
+
         <div class="flow-wrapper">
+            <!-- 步驟 01 -->
             <div class="step-node">
                 <div class="icon-box">
                     <div class="step-number">01</div>
@@ -270,13 +280,16 @@
                     <span class="step-title">三讀通過法律案</span>
                     <div class="highlight-box">
                         案件編號 
-                        <a href="files/01_案件編號清單.xlsx" target="_blank" class="file-link">
+                        <a href="files/01_案件編號清單.xlsx" target="_blank" class="file-link" title="開啟 01_案件編號清單.xlsx">
                             <i class="fa-solid fa-file-excel icon-excel"></i>
                         </a>
                     </div>
                 </div>
             </div>
+
             <div class="flow-connector"></div>
+
+            <!-- 步驟 02 -->
             <div class="step-node">
                 <div class="icon-box">
                     <div class="step-number">02</div>
@@ -285,39 +298,45 @@
                 <div class="step-content">
                     <span class="step-title">公報處提供三讀條文</span>
                     <div class="highlight-box">
-                        格式校對 
-                        <a href="files/02_三讀條文校對稿.docx" target="_blank" class="file-link">
+                        校對與格式整理 
+                        <a href="files/02_三讀條文校對稿.docx" target="_blank" class="file-link" title="開啟 02_三讀條文校對稿.docx">
                             <i class="fa-solid fa-file-word icon-word"></i>
                         </a>
                     </div>
                 </div>
             </div>
+
             <div class="flow-connector"></div>
+
+            <!-- 步驟 03 -->
             <div class="step-node">
                 <div class="icon-box">
                     <div class="step-number">03</div>
                     <i class="fa-solid fa-building-columns"></i>
                 </div>
                 <div class="step-content">
-                    <span class="step-title">總統公布法律</span>
+                    <span class="step-title">總統公布法律(總統府公報)</span>
                     <div class="highlight-box">
-                        後台建條文 
-                        <a href="https://your-system-url.com" target="_blank" class="file-link">
+                        智庫後台建條文 
+                        <a href="https://lismenu.ly.gov.tw/lgmenuc/lgmenutp?@@0.8729349410585079" target="_blank" class="file-link" title="前往智庫後台建檔系統">
                             <i class="fa-solid fa-database icon-system"></i>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="footer">法律組</div>
     </div>
 
-    <!-- 第二張簡報：後續整理 -->
+    <!-- 簡報第二頁 -->
     <div class="slide-container" id="slide2">
         <div class="slide-header">
-            <h1>院會三讀公報出刊後處理</h1>
+            <h1>該次三讀院會公報出刊</h1>
         </div>
+
         <div class="flow-wrapper">
+            <!-- 製作立法歷程 -->
             <div class="step-node two-col">
                 <div class="icon-box">
                     <div class="step-number">01</div>
@@ -326,20 +345,24 @@
                 <div class="step-content">
                     <span class="step-title">製作立法歷程</span>
                     <div class="highlight-box">
-                        議案整理 
-                        <a href="files/03_立法歷程整理.docx" target="_blank" class="file-link">
+                        依議事系統整理相關議案 
+                        <a href="files/03_立法歷程整理.docx" target="_blank" class="file-link" title="開啟 03_立法歷程整理.docx">
                             <i class="fa-solid fa-file-word icon-word"></i>
                         </a>
                     </div>
                     <div class="highlight-box">
-                        格式轉換 
-                        <a href="files/04_立法歷程格式轉換.xlsx" target="_blank" class="file-link">
+                        轉換原始格式 
+                        <a href="files/04_立法歷程格式轉換.xlsx" target="_blank" class="file-link" title="開啟 04_立法歷程格式轉換.xlsx">
                             <i class="fa-solid fa-file-excel icon-excel"></i>
                         </a>
+                        → 鍵入後台
                     </div>
                 </div>
             </div>
+
             <div class="flow-connector" style="top: 60px;"></div>
+
+            <!-- 製作立法理由 -->
             <div class="step-node two-col">
                 <div class="icon-box">
                     <div class="step-number">02</div>
@@ -348,17 +371,19 @@
                 <div class="step-content">
                     <span class="step-title">製作立法理由</span>
                     <div class="highlight-box">
-                        條文整理 
-                        <a href="files/05_立法理由整理.docx" target="_blank" class="file-link">
+                        參照二讀逐條結論整理 
+                        <a href="files/05_立法理由整理.docx" target="_blank" class="file-link" title="開啟 05_立法理由整理.docx">
                             <i class="fa-solid fa-file-word icon-word"></i>
                         </a>
+                        → 鍵入後台
                     </div>
                     <ul class="sub-list">
-                        <li>依據二讀逐條宣讀結論進行彙整。</li>
+                        <li>可能情況：照修正動議通過、照協商結論通過、表決通過等。</li>
                     </ul>
                 </div>
             </div>
         </div>
+
         <div class="footer">法律組</div>
     </div>
 

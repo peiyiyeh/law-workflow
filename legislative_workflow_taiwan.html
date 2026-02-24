@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>法律案建檔作業流程簡報</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #002147;
+            --accent-color: #c5b358;
+            --text-main: #1e293b;
+            --text-sub: #475569;
+            --white: #ffffff;
+            --slide-width: 1280px;
+            --slide-height: 720px;
+            --excel-color: #1d6f42;
+            --word-color: #2b579a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: #cbd5e1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            margin: 0;
+            padding: 40px 0;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        .print-tools {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+
+        .slide-container {
+            width: var(--slide-width);
+            height: var(--slide-height);
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 80px 80px;
+            flex-shrink: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .page-break {
+            break-after: page;
+        }
+
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,33,71,0.03) 0%, rgba(0,33,71,0.08) 100%);
+            z-index: 0;
+            clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
+        }
+
+        .slide-header {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 48px;
+            margin: 0;
+            border-left: 12px solid var(--accent-color);
+            padding-left: 30px;
+        }
+
+        .flow-wrapper {
+            flex-grow: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+
+        .flow-connector {
+            flex-grow: 1;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 0 10px;
+            position: relative;
+            top: 55px;
+            opacity: 0.5;
+        }
+
+        .step-node {
+            width: 31%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .icon-box {
+            width: 110px;
+            height: 110px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 44px;
+            margin-bottom: 30px;
+            box-shadow: 0 12px 20px rgba(0,33,71,0.2);
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .step-content {
+            text-align: center;
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            width: 100%;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .step-title {
+            color: var(--primary-color);
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .highlight-box {
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #fffbeb;
+            border: 2px dashed var(--accent-color);
+            border-radius: 8px;
+            color: #78350f;
+            font-weight: 700;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .file-link {
+            text-decoration: none;
+            transition: transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .file-link:hover {
+            transform: scale(1.2);
+        }
+
+        .icon-excel { color: var(--excel-color); font-size: 28px; }
+        .icon-word { color: var(--word-color); font-size: 28px; }
+        .icon-system { color: var(--primary-color); font-size: 28px; }
+
+        .footer {
+            margin-top: auto;
+            font-size: 16px;
+            color: #64748b;
+            text-align: right;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .step-node.two-col { width: 47%; }
+        .sub-list {
+            text-align: left;
+            font-size: 18px;
+            color: var(--text-sub);
+            margin: 15px 0 0 0;
+            padding-left: 25px;
+            line-height: 1.8;
+        }
+
+        @media print {
+            body { background-color: white; padding: 0; gap: 0; }
+            .print-tools { display: none !important; }
+            .slide-container {
+                box-shadow: none;
+                border-radius: 0;
+                width: 100%;
+                height: 100vh;
+                margin: 0;
+            }
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="print-tools">
+        <h3 style="margin: 0 0 5px 0; color: var(--primary-color);">雲端化建議：GitHub Pages</h3>
+        <p style="margin: 0; font-size: 14px; color: var(--text-sub);">
+            檔案上傳 GitHub 後，將網址填入 <strong>href</strong> 即可。這讓簡報在任何有網路的電腦都能點開檔案。
+        </p>
+    </div>
+
+    <!-- 第一張簡報 -->
+    <div class="slide-container page-break" id="slide1">
+        <div class="slide-header">
+            <h1>法律案三讀至建檔作業流程</h1>
+        </div>
+
+        <div class="flow-wrapper">
+            <div class="step-node">
+                <div class="icon-box">
+                    <div class="step-number">01</div>
+                    <i class="fa-solid fa-gavel"></i>
+                </div>
+                <div class="step-content">
+                    <span class="step-title">三讀通過法律案</span>
+                    <div class="highlight-box">
+                        案件編號 
+                        <!-- 改為 GitHub 上的檔案路徑 -->
+                        <a href="files/01_案件編號清單.xlsx" target="_blank" class="file-link" title="從雲端下載檔案">
+                            <i class="fa-solid fa-file-excel icon-excel"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-connector"></div>
+
+            <div class="step-node">
+                <div class="icon-box">
+                    <div class="step-number">02</div>
+                    <i class="fa-solid fa-file-pen"></i>
+                </div>
+                <div class="step-content">
+                    <span class="step-title">公報處提供三讀條文</span>
+                    <div class="highlight-box">
+                        校對與格式整理 
+                        <a href="files/02_三讀條文校對稿.docx" target="_blank" class="file-link" title="從雲端下載檔案">
+                            <i class="fa-solid fa-file-word icon-word"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-connector"></div>
+
+            <div class="step-node">
+                <div class="icon-box">
+                    <div class="step-number">03</div>
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <div class="step-content">
+                    <span class="step-title">總統公布法律(總統府公報)</span>
+                    <div class="highlight-box">
+                        智庫後台建條文 
+                        <a href="https://your-database-link.com" target="_blank" class="file-link" title="前往後台系統">
+                            <i class="fa-solid fa-database icon-system"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">法律組</div>
+    </div>
+
+    <!-- 第二張簡報 -->
+    <div class="slide-container" id="slide2">
+        <div class="slide-header">
+            <h1>該次三讀院會公報出刊</h1>
+        </div>
+
+        <div class="flow-wrapper">
+            <div class="step-node two-col">
+                <div class="icon-box">
+                    <div class="step-number">01</div>
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                <div class="step-content">
+                    <span class="step-title">製作立法歷程</span>
+                    <div class="highlight-box">
+                        依議事及發言系統整理相關議案 
+                        <a href="files/03_立法歷程整理.docx" target="_blank" class="file-link">
+                            <i class="fa-solid fa-file-word icon-word"></i>
+                        </a>
+                    </div>
+                    <div class="highlight-box">
+                        轉換原始格式 
+                        <a href="files/04_立法歷程格式轉換.xlsx" target="_blank" class="file-link">
+                            <i class="fa-solid fa-file-excel icon-excel"></i>
+                        </a>
+                        → 鍵入後台
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-connector" style="top: 55px;"></div>
+
+            <div class="step-node two-col">
+                <div class="icon-box">
+                    <div class="step-number">02</div>
+                    <i class="fa-solid fa-comment-dots"></i>
+                </div>
+                <div class="step-content">
+                    <span class="step-title">製作立法理由</span>
+                    <div class="highlight-box">
+                        參照二讀逐條宣讀結論整理 
+                        <a href="files/05_立法理由整理.docx" target="_blank" class="file-link">
+                            <i class="fa-solid fa-file-word icon-word"></i>
+                        </a>
+                        → 鍵入後台
+                    </div>
+                    <ul class="sub-list">
+                        <li>可能情況：照審查會通過、照協商結論通過、照修正動議通過、表決通過...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">法律組</div>
+    </div>
+
+</body>
+</html>

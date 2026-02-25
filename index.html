@@ -8,18 +8,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        
         body {
             font-family: 'Noto Sans TC', sans-serif;
             background-color: #f1f5f9;
+            overflow-x: hidden;
         }
+
         .slide {
             display: none;
             min-height: 600px;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
         }
+
         .slide.active {
             display: flex;
             flex-direction: column;
+            opacity: 1;
         }
+
         .card {
             background: white;
             border-radius: 1rem;
@@ -27,7 +35,6 @@
             border-top: 6px solid #1e40af;
         }
         
-        /* 檔案圖示樣式 */
         .file-icon {
             transition: all 0.2s;
             cursor: pointer;
@@ -36,31 +43,60 @@
             justify-content: center;
             vertical-align: middle;
         }
+
         .file-icon:hover {
             transform: scale(1.2);
             filter: brightness(1.2);
         }
+
         .icon-excel { color: #1d6f42; }
         .icon-word { color: #2b579a; }
         
-        /* 開發者選單樣式 */
         #dev-panel {
             display: none;
             position: fixed;
-            bottom: 80px;
+            bottom: 90px;
             right: 20px;
             background: white;
             border: 1px solid #cbd5e1;
             border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             z-index: 50;
-            padding: 10px;
+            padding: 12px;
         }
 
-        /* 側邊標籤旋轉樣式 */
         .vertical-label {
             writing-mode: vertical-rl;
             text-orientation: mixed;
+        }
+
+        .db-container {
+            transition: transform 0.3s ease;
+        }
+        .db-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .action-btn {
+            transition: all 0.2s;
+        }
+        .action-btn:hover {
+            background-color: #e2e8f0;
+            color: #1e40af;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
 </head>
@@ -68,7 +104,7 @@
 
     <div class="max-w-5xl mx-auto">
         <!-- Slide 1: 主標題與目標 -->
-        <div id="slide1" class="slide active">
+        <div id="slide1" class="slide">
             <div class="card p-10 flex-grow">
                 <div class="flex justify-between items-start mb-8">
                     <h1 class="text-4xl font-extrabold text-blue-900 leading-tight">法律系統資料庫<br>更新建檔流程</h1>
@@ -110,8 +146,8 @@
                     <div class="flex items-start">
                         <div class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 font-bold mr-4">01</div>
                         <div class="bg-white border border-slate-200 p-5 rounded-lg shadow-sm flex-grow text-lg">
-                            三讀通過法律案(立院公報初稿)→ <span class="font-bold text-blue-700">案件編號</span>
-                            <a href="files/01_案件編號清單.xlsx" class="file-icon icon-excel text-2xl ml-2" title="下載：01_案件編號清單.xlsx">
+                            三讀通過法律案 (立院公報初稿) → <span class="font-bold text-blue-700">案件編號</span>
+                            <a href="#" class="file-icon icon-excel text-2xl ml-2" title="下載：01_案件編號清單.xlsx">
                                 <i class="fas fa-file-excel"></i>
                             </a>
                         </div>
@@ -120,8 +156,8 @@
                     <div class="flex items-start">
                         <div class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 font-bold mr-4">02</div>
                         <div class="bg-white border border-slate-200 p-5 rounded-lg shadow-sm flex-grow text-lg">
-                            公報處提供三讀條文→ <span class="font-bold text-blue-700">整理條文</span>
-                            <a href="files/02_三讀條文校對稿.docx" class="file-icon icon-word text-2xl ml-2" title="下載：02_三讀條文校對稿.docx">
+                            公報處提供三讀條文 → <span class="font-bold text-blue-700">整理條文</span>
+                            <a href="#" class="file-icon icon-word text-2xl ml-2" title="下載：02_三讀條文校對稿.docx">
                                 <i class="fas fa-file-word"></i>
                             </a>
                         </div>
@@ -130,33 +166,33 @@
                     <div class="flex items-start">
                         <div class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 font-bold mr-4">03</div>
                         <div class="bg-white border border-slate-200 p-5 rounded-lg shadow-sm flex-grow text-lg">
-                            總統公布法律(總統府公報)→ 智庫後台上傳條文。
+                            總統公布法律 (總統府公報) → 智庫後台上傳條文。
                         </div>
                     </div>
                     <!-- Step 04 -->
                     <div class="flex items-start">
                         <div class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 font-bold mr-4">04</div>
                         <div class="bg-white border border-slate-200 p-5 rounded-lg shadow-sm flex-grow">
-                            <div class="font-bold mb-3 text-blue-900 italic text-xl">正式立院公報出刊→</div>
+                            <div class="font-bold mb-3 text-blue-900 italic text-xl">正式立院公報出刊 →</div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <!-- 立法歷程 -->
                                 <div class="bg-blue-50 p-5 rounded border border-blue-100 shadow-sm">
-                                    <p class="font-bold text-blue-800 mb-3 underline italic text-lg">整理"立法歷程"</p>
+                                    <p class="font-bold text-blue-800 mb-3 underline italic text-lg">整理 "立法歷程"</p>
                                     <p class="text-base text-slate-700 leading-relaxed">
                                         依議事系統整理相關議案內容
-                                        <a href="files/03_立法歷程整理.docx" class="file-icon icon-word text-lg mx-1" title="下載：03_立法歷程整理.docx"><i class="fas fa-file-word"></i></a> 
+                                        <a href="#" class="file-icon icon-word text-lg mx-1" title="下載：03_立法歷程整理.docx"><i class="fas fa-file-word"></i></a> 
                                         → 原始格式轉換
-                                        <a href="files/04_立法歷程格式轉換.xlsx" class="file-icon icon-excel text-lg mx-1" title="下載：04_立法歷程格式轉換.xlsx"><i class="fas fa-file-excel"></i></a> 
-                                        → <span class="text-blue-700">智庫後台上傳</span>
+                                        <a href="#" class="file-icon icon-excel text-lg mx-1" title="下載：04_立法歷程格式轉換.xlsx"><i class="fas fa-file-excel"></i></a> 
+                                        → <span class="text-blue-700 font-bold">智庫後台上傳</span>
                                     </p>
                                 </div>
                                 <!-- 立法理由 -->
                                 <div class="bg-blue-50 p-5 rounded border border-blue-100 shadow-sm">
-                                    <p class="font-bold text-blue-800 mb-3 underline italic text-lg">整理"立法理由"</p>
+                                    <p class="font-bold text-blue-800 mb-3 underline italic text-lg">整理 "立法理由"</p>
                                     <p class="text-base text-slate-700 leading-relaxed">
                                         依二讀逐條宣讀結論整理立法理由
-                                        <a href="files/05_立法理由整理.docx" class="file-icon icon-word text-lg mx-1" title="下載：05_立法理由整理.docx"><i class="fas fa-file-word"></i></a> 
-                                        → <span class="text-blue-700">智庫後台上傳</span>
+                                        <a href="#" class="file-icon icon-word text-lg mx-1" title="下載：05_立法理由整理.docx"><i class="fas fa-file-word"></i></a> 
+                                        → <span class="text-blue-700 font-bold">智庫後台上傳</span>
                                     </p>
                                 </div>
                             </div>
@@ -166,28 +202,134 @@
             </div>
         </div>
 
-        <!-- Slide 3: 整理"法律條文" -->
-        <div id="slide3" class="slide">
+        <!-- Slide 3: 建檔"法律條文" -->
+        <div id="slide3" class="slide active">
             <div class="card p-10 flex-grow">
-                <div class="flex justify-between items-start mb-6">
-                    <h2 class="text-3xl font-extrabold text-blue-900">整理"法律條文"</h2>
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-3xl font-extrabold text-blue-900">建檔 「法律條文」</h2>
                     <span class="bg-blue-100 text-blue-800 px-4 py-1 rounded-full font-bold">Slide 03</span>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 text-lg">
-                    <div class="flex items-center p-4 bg-slate-50 rounded border-l-4 border-slate-400">法名稱</div>
-                    <div class="flex items-center p-4 bg-slate-50 rounded border-l-4 border-slate-400">法編號</div>
-                    <div class="flex items-center p-4 bg-slate-50 rounded border-l-4 border-slate-400">三讀日期</div>
-                    <div class="flex items-center p-4 bg-slate-50 rounded border-l-4 border-slate-400">公布日期</div>
-                    <div class="flex items-center p-4 bg-slate-50 rounded border-l-4 border-slate-400">異動條號</div>
-                    <div class="flex items-center p-4 bg-blue-50 rounded border-l-4 border-blue-600 text-base font-medium">
-                        異動方式 (b增訂、a修改、c刪除、d全文修正、f制定、e廢止等)
+                
+                <!-- 新增、編輯按鈕列 -->
+                <div class="flex justify-center gap-6 mb-8 border-b border-slate-100 pb-4">
+                    <div class="flex flex-col items-center group cursor-pointer">
+                        <div class="action-btn w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 shadow-sm border border-slate-200">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <span class="text-xs font-bold text-slate-400 mt-1 group-hover:text-blue-600">新增</span>
                     </div>
-                    <div class="flex items-center p-4 bg-slate-50 rounded border-l-4 border-slate-400">編章節款目</div>
-                    <div class="flex items-center p-4 bg-slate-50 rounded border-l-4 border-slate-400">相關條文</div>
-                    <div class="flex items-center p-4 bg-slate-50 rounded border-l-4 border-slate-400">附件</div>
+                    <div class="flex flex-col items-center group cursor-pointer">
+                        <div class="action-btn w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 shadow-sm border border-slate-200">
+                            <i class="fas fa-pen"></i>
+                        </div>
+                        <span class="text-xs font-bold text-slate-400 mt-1 group-hover:text-blue-600">編輯</span>
+                    </div>
                 </div>
-                <div class="mt-8 p-8 bg-orange-50 border-2 border-dashed border-orange-300 rounded-xl text-center">
-                    <p class="text-2xl font-bold text-orange-800 italic underline">外加一個 "修正紀錄" (法律版本更新)</p>
+                
+                <!-- 資料庫區域 -->
+                <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+                    <!-- 基本資料 -->
+                    <div class="db-container flex flex-col items-center flex-1 min-w-[120px]">
+                        <svg class="w-16 h-16 text-blue-400 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        </svg>
+                        <span class="text-xl font-bold text-blue-900">基本資料</span>
+                        <span class="text-sm text-slate-500 mt-1">名稱編號</span>
+                        <!-- 新增：制定法 -->
+                        <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100 mt-2">制定法</span>
+                    </div>
+
+                    <!-- 編章節款目 -->
+                    <div class="db-container flex flex-col items-center flex-1 min-w-[120px]">
+                        <svg class="w-16 h-16 text-blue-400 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        </svg>
+                        <span class="text-xl font-bold text-blue-900">編章節款目</span>
+                        <span class="text-sm text-slate-500 mt-1">結構層級</span>
+                    </div>
+
+                    <!-- 條文 (核心) - 紅色強調 -->
+                    <div class="flex flex-col items-center flex-1 min-w-[120px] gap-6">
+                        <div class="db-container flex flex-col items-center w-full">
+                            <svg class="w-16 h-16 text-red-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                            </svg>
+                            <span class="text-xl font-bold text-red-600">條文</span>
+                            <span class="text-sm text-red-500 mt-1 font-bold">核心異動</span>
+                        </div>
+                        
+                        <!-- 沿革分身 (新舊對照) -->
+                        <div class="db-container flex flex-col items-center w-full pt-4 border-t border-slate-200">
+                            <svg class="w-12 h-12 text-slate-300 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                            </svg>
+                            <span class="text-lg font-bold text-slate-400 italic">沿革</span>
+                            <span class="text-xs text-slate-400 mt-1">新舊對照</span>
+                        </div>
+                    </div>
+
+                    <!-- 附件 -->
+                    <div class="db-container flex flex-col items-center flex-1 min-w-[120px]">
+                        <svg class="w-16 h-16 text-blue-400 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        </svg>
+                        <span class="text-xl font-bold text-blue-900">附件</span>
+                        <span class="text-sm text-slate-500 mt-1">相關圖表</span>
+                    </div>
+
+                    <!-- 修正紀錄 -->
+                    <div class="db-container flex flex-col items-center flex-1 min-w-[120px]">
+                        <svg class="w-16 h-16 text-orange-600 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        </svg>
+                        <span class="text-xl font-bold text-orange-800">修正紀錄</span>
+                        <span class="text-sm text-orange-600 mt-1 font-medium">歷史軌跡</span>
+                    </div>
+                </div>
+
+                <!-- 強調文字 -->
+                <div class="flex items-center justify-center text-blue-800 bg-blue-50/80 py-2.5 px-4 mb-2 rounded-lg border border-blue-100">
+                    <i class="fas fa-info-circle mr-2 text-blue-600"></i>
+                    <p class="text-base font-bold tracking-wide">※ 上述資料庫為「法律條文」更新時的核心組成部分，確保法律版本之完整與延續性。</p>
+                </div>
+
+                <!-- 條文建檔欄位列表 -->
+                <div class="bg-blue-50/50 rounded-2xl p-6 border border-blue-100 shadow-inner relative">
+                    <h3 class="text-lg font-bold text-blue-900 mb-4 flex items-center">
+                        <i class="fas fa-list-ul mr-2 text-blue-500"></i> 條文建檔欄位
+                    </h3>
+
+                    <div class="flex flex-nowrap justify-between items-start gap-1.5 overflow-x-auto pb-4">
+                        <div class="px-3 py-3 bg-white rounded-lg border-2 border-blue-100 text-blue-800 font-bold shadow-sm text-sm md:text-base whitespace-nowrap flex-grow text-center">法編號</div>
+                        <div class="px-3 py-3 bg-white rounded-lg border-2 border-blue-100 text-blue-800 font-bold shadow-sm text-sm md:text-base whitespace-nowrap flex-grow text-center">條號</div>
+                        <div class="px-3 py-3 bg-emerald-500 border-2 border-emerald-600 text-white font-bold shadow-md rounded-lg text-sm md:text-base whitespace-nowrap flex-grow text-center">狀態</div>
+                        <div class="px-3 py-3 bg-white rounded-lg border-2 border-blue-100 text-blue-800 font-bold shadow-sm text-sm md:text-base whitespace-nowrap flex-grow text-center">三讀日期</div>
+                        
+                        <!-- 異動別欄位及其說明 -->
+                        <div class="flex flex-col gap-2 flex-grow min-w-[120px]">
+                            <div class="px-3 py-3 bg-white rounded-lg border-2 border-blue-100 text-blue-800 font-bold shadow-sm text-sm md:text-base whitespace-nowrap text-center">異動別</div>
+                            <!-- 新增：異動別說明文字 -->
+                            <div class="text-[10px] md:text-xs text-blue-500 font-bold bg-white/80 py-1 px-2 rounded border border-blue-200 shadow-sm animate-pulse">
+                                a修改 / b增訂 / c刪除 / <br> d全文修正 / e廢止 / f制定
+                            </div>
+                        </div>
+
+                        <div class="px-3 py-3 bg-white rounded-lg border-2 border-blue-100 text-blue-800 font-bold shadow-sm text-sm md:text-base whitespace-nowrap flex-grow text-center">編章節款目</div>
+                        <div class="px-3 py-3 bg-white rounded-lg border-2 border-blue-100 text-blue-800 font-bold shadow-sm text-sm md:text-base whitespace-nowrap flex-grow text-center">條文內容</div>
+                        <div class="px-3 py-3 bg-white rounded-lg border-2 border-blue-100 text-blue-800 font-bold shadow-sm text-sm md:text-base whitespace-nowrap flex-grow text-center">相關條文</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -196,13 +338,12 @@
         <div id="slide4" class="slide">
             <div class="card p-10 flex-grow">
                 <div class="flex justify-between items-start mb-6">
-                    <h2 class="text-3xl font-extrabold text-blue-900">整理"立法歷程"</h2>
+                    <h2 class="text-3xl font-extrabold text-blue-900">整理 "立法歷程"</h2>
                     <span class="bg-blue-100 text-blue-800 px-4 py-1 rounded-full font-bold">Slide 04</span>
                 </div>
-                <p class="text-xl font-bold text-slate-600 mb-4 underline">該法律案相關議案的會議日期、公報頁碼、檔案位置</p>
+                <p class="text-xl font-bold text-slate-600 mb-4 underline text-center md:text-left">該法律案相關議案的會議日期、公報頁碼、檔案位置</p>
                 
                 <div class="space-y-2">
-                    <!-- 非同步事項 -->
                     <div class="flex items-center bg-slate-50 p-3 rounded-lg border border-slate-200">
                         <span class="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs mr-3 flex-shrink-0">a</span>
                         <span class="font-bold flex-grow">一讀提案 (報告決議付委/逕付二讀) <span class="text-slate-400 ml-2 font-normal">→ 關係文書</span></span>
@@ -220,8 +361,8 @@
                         <span class="font-bold">黨團協商</span>
                     </div>
 
-                    <!-- 院會組塊：框選 c, d, e, j -->
-                    <div class="flex">
+                    <!-- 院會組塊 -->
+                    <div class="flex mt-4">
                         <div class="flex-grow p-4 border-2 border-dashed border-blue-300 rounded-xl bg-blue-50/30 space-y-2">
                             <div class="flex items-center bg-blue-50 p-3 rounded-lg border border-blue-200 shadow-sm">
                                 <span class="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs mr-3 flex-shrink-0">c</span>
@@ -240,7 +381,6 @@
                                 <span class="font-bold text-orange-800">附帶決議</span>
                             </div>
                         </div>
-                        <!-- 右側垂直標註 -->
                         <div class="flex items-center ml-2">
                             <div class="vertical-label bg-blue-600 text-white font-bold py-4 px-2 rounded-lg text-sm tracking-widest shadow-md">
                                 同一次院會的討論事項
@@ -255,7 +395,7 @@
         <div id="slide5" class="slide">
             <div class="card p-10 flex-grow">
                 <div class="flex justify-between items-start mb-6">
-                    <h2 class="text-3xl font-extrabold text-blue-900">整理"立法理由"</h2>
+                    <h2 class="text-3xl font-extrabold text-blue-900">整理 "立法理由"</h2>
                     <span class="bg-blue-100 text-blue-800 px-4 py-1 rounded-full font-bold">Slide 05</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 mb-8 text-lg">
@@ -267,10 +407,9 @@
                     <div class="flex items-center p-4 bg-emerald-50 rounded border-l-4 border-emerald-500 font-bold text-emerald-800">立法理由 (含公報頁碼)</div>
                 </div>
                 
-                <!-- 底部連結按鈕 -->
                 <div class="mt-auto pt-8 flex flex-col items-center border-t border-slate-100">
                     <p class="text-slate-400 text-base mb-4">更多詳細資訊請參閱決議流程：</p>
-                    <a href="flowchart.html" target="_blank" class="flex flex-col items-center group">
+                    <a href="#" class="flex flex-col items-center group">
                         <div class="w-24 h-24 bg-emerald-100 text-emerald-600 rounded-3xl flex items-center justify-center text-4xl mb-3 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
                             <i class="fas fa-sitemap"></i>
                         </div>
@@ -280,22 +419,26 @@
             </div>
         </div>
 
-        <!-- 控制按鈕區域 -->
+        <!-- 控制區域 -->
         <div class="mt-8 flex justify-between items-center px-4 relative">
             <button onclick="prevSlide()" class="bg-slate-700 hover:bg-slate-800 text-white px-8 py-3 rounded-xl transition-all font-bold disabled:opacity-30 disabled:cursor-not-allowed text-lg" id="prevBtn">
                 <i class="fas fa-chevron-left mr-2"></i> 上一張
             </button>
-            <div class="text-slate-500 font-bold tracking-widest bg-white px-6 py-2 rounded-full shadow-sm border border-slate-100 text-lg" id="pageIndicator">1 / 5</div>
+            
+            <div class="text-slate-500 font-bold tracking-widest bg-white px-6 py-2 rounded-full shadow-sm border border-slate-100 text-lg" id="pageIndicator">
+                3 / 5
+            </div>
+            
             <button onclick="nextSlide()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl transition-all font-bold shadow-lg shadow-blue-200 disabled:opacity-30 disabled:cursor-not-allowed text-lg" id="nextBtn">
                 下一張 <i class="fas fa-chevron-right ml-2"></i>
             </button>
             
-            <!-- 開發者工具 -->
             <button onclick="toggleDevPanel()" class="ml-4 p-2 text-slate-400 hover:text-blue-600 transition-colors" title="快速跳轉">
                 <i class="fas fa-tools text-2xl"></i>
             </button>
         </div>
         
+        <!-- 開發者選單 -->
         <div id="dev-panel" class="animate-in fade-in slide-in-from-bottom-2 duration-200">
             <div class="text-[10px] font-bold text-slate-400 mb-2 px-1 uppercase tracking-widest border-b pb-1">跳至投影片</div>
             <div class="grid grid-cols-5 gap-1">
@@ -309,7 +452,7 @@
     </div>
 
     <script>
-        let currentSlide = 1;
+        let currentSlide = 3;
         const totalSlides = 5;
 
         function updateSlide() {
@@ -317,12 +460,14 @@
                 const el = document.getElementById('slide' + i);
                 if (el) el.classList.remove('active');
             }
+            
             const currentEl = document.getElementById('slide' + currentSlide);
             if (currentEl) currentEl.classList.add('active');
             
-            document.getElementById('pageIndicator').innerText = currentSlide + ' / ' + totalSlides;
+            document.getElementById('pageIndicator').innerText = `${currentSlide} / ${totalSlides}`;
             document.getElementById('prevBtn').disabled = (currentSlide === 1);
             document.getElementById('nextBtn').disabled = (currentSlide === totalSlides);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function nextSlide() {
@@ -351,9 +496,14 @@
         }
 
         document.addEventListener('keydown', function(event) {
-            if (event.key === "ArrowRight" || event.key === " ") nextSlide();
-            else if (event.key === "ArrowLeft") prevSlide();
-            else if (event.key >= "1" && event.key <= "5") goToSlide(parseInt(event.key));
+            if (event.key === "ArrowRight" || event.key === " ") {
+                event.preventDefault();
+                nextSlide();
+            }
+            else if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                prevSlide();
+            }
         });
 
         window.onload = updateSlide;
